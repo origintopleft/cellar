@@ -1,0 +1,5 @@
+#pragma once
+
+#cmakedefine IS_GIT_REPO "@IS_GIT_REPO@"
+#cmakedefine GIT_COMMIT_HASH "@GIT_COMMIT_HASH@"
+#cmakedefine GIT_BRANCH "@GIT_BRANCH@"
