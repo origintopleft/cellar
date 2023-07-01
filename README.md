@@ -2,8 +2,6 @@
 ### bottle management tool for WINE connoisseurs
 *(this software is considered unfinished, use at own risk)*
 
-(notice: https://github.com/origintopleft/cellar is a mirror. The upstream repository is at [vcs.lavacano.net/cellar.git](http://vcs.lavacano.net/?p=cellar.git), and bugs are officially tracked at [mantis.lavacano.net](http://mantis.lavacano.net))
-
 ## Installation
 
     $ mkdir build && cd build
