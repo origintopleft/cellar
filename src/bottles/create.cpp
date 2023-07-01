@@ -30,8 +30,10 @@ void cellar::bottles::create_bottle(int argc, vector<string> argv) {
 
     cmdparse.parse(argv);
 
-
+    // sanity check: make sure ~/.local/share/cellar/bottles exists
     string homepath = getenv("HOME");
+    if (!boost::filesystem::exists(homepath + "/.local/share/cellar/bottles")) { boost::filesystem::create_directories(homepath + "/.local/share/cellar/bottles"); }
+
     string bottlechoice = bottlearg.getValue();
     string fullbottlepath;
     if (bottlechoice.substr(0,1) == "/" || bottlechoice.substr(0,1) == ".") { // absolute or relative path
