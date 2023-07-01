@@ -1,6 +1,6 @@
 /* This file contains string definitions for ANSI color sequences
- * it was written by Nicholas "Lavacano" O'Connor and is available
- * to all under the MIT license.
+ * it was written by Nicole O'Connor and is available  to all 
+ * under the MIT license.
  *
  * Usage:
  *     std::cout << ansicol::red_bold << "I am bold red text!" << ansicol::reset << std::endl;
