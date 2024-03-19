@@ -1,0 +1,15 @@
+## incomplete: need to double check syntax of [Build-]Depends and add libboost-{file,}system-dev to it, among other packages
+Source: cellar
+Maintainer: Nicole O'Connor <nicole@otl-hga.net>
+Section: main
+Priority: optional
+Standards-Version: 4.6.2
+Build-Depends: debhelper-compat (= 13)
+
+Package: cellar
+Architecture: amd64
+Depends: ${shlibs:Depends} ${misc:Depends}
+Description: WINE bottle management tool
+    Helps users manage multiple instances of WINE across
+    multiple configuration prefixes (or, bottles). Comes
+    with some advanced features.
