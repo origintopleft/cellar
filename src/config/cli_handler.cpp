@@ -46,7 +46,15 @@ void cellar::config::config_command(int argc, vector<string> argv) {
             return;
         }
 
-        string myval = active_bottle.get_config(key);
+        string myval;
+        if (global) {
+            if (config::global_config.find(key) != config::global_config.end()) {
+                myval = config::global_config[key];
+            } else if (config::compiled_config.find(key) != config::compiled_config.end()) {
+                myval = config::compiled_config[key];
+            }
+        }
+        else { myval = active_bottle.get_config(key); }
 
         if (myval != "") {
             output::statement(key + ": " + myval);
@@ -60,7 +68,14 @@ void cellar::config::config_command(int argc, vector<string> argv) {
         }
 
         string newvalue = value;
-        string oldvalue = active_bottle.get_config(key);
+        string oldvalue
+        if (global) {
+            if (config::global_config.find(key) != config::global_config.end()) {
+                oldvalue = config::global_config[key];
+            } else if (config::compiled_config.find(key) != config::compiled_config.end()) {
+                oldvalue = config::compiled_config[key];
+            }
+        } else { oldvalue = active_bottle.get_config(key); }
 
         if (active_bottle.set_config(key, newvalue)) {
             output::statement(key + ": " + newvalue + " (was " + oldvalue + ")");
