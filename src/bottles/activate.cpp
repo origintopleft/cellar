@@ -3,8 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
+#include <boost/filesystem.hpp>
 
 #include "bottles.hpp"
 #include "cellar.hpp"
@@ -20,9 +19,9 @@ void cellar::bottles::switch_active_bottle(int argc, vector<string> argv) {
         return;
     }
 
-    string homepath = getenv("HOME");                // /home/nick
-    string bottlepath = homepath + "/.wine";         // /home/nick/.wine
-    string targetpath = homepath + "/.local/share/cellar/bottles/" + argv[1];  // /home/nick/.wine.example
+    string homepath = getenv("HOME");
+    string bottlepath = homepath + "/.wine";
+    string targetpath = homepath + "/.local/share/cellar/bottles/" + argv[1];
 
     file_status targetstatus = symlink_status(targetpath);
     if (!exists(targetstatus)) {

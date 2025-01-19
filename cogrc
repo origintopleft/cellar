@@ -1,5 +1,6 @@
 [version]
-release_version=0.4
+release_version=0.5
 
 [defaults]
 wine-path=wine
+cellar-bottle-path=~/.local/share/cellar/bottles

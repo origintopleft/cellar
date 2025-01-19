@@ -2,8 +2,7 @@
 #include <string>
 #include <vector>
 
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
+#include <boost/filesystem.hpp>
 
 #include "cellar.hpp"
 #include "fs.hpp"
