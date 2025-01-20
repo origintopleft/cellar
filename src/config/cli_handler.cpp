@@ -5,6 +5,7 @@
 
 #include "bottles.hpp"
 #include "cellar.hpp"
+#include "config.hpp"
 #include "internal/config.hpp"
 #include "output.hpp"
 #include "version.hpp"
@@ -68,7 +69,7 @@ void cellar::config::config_command(int argc, vector<string> argv) {
         }
 
         string newvalue = value;
-        string oldvalue
+        string oldvalue;
         if (global) {
             if (config::global_config.find(key) != config::global_config.end()) {
                 oldvalue = config::global_config[key];
