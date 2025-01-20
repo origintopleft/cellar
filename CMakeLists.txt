@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7.2)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/Modules)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 include(Colours)
 include(Platform)
 
@@ -37,7 +37,8 @@ http://tclap.sourceforge.net and put the headers in ./include
 (wink, nudge)")
 endif(NOT TCLAP_FOUND)
 
-include(LavaTargets)
+#include(LavaTargets)
+include(Binaries)
 
 include_directories(include)
 configure_file("${CMAKE_SOURCE_DIR}/include/cmake.hpp.in"
@@ -45,16 +46,17 @@ configure_file("${CMAKE_SOURCE_DIR}/include/cmake.hpp.in"
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/include")
 set(src "${CMAKE_SOURCE_DIR}/src")
 
-lava_create_gutlib(
+build_library(TARGET libcellar
         SUBDIRS bottles config launch paths
         DEPENDS cog)
+set_target_properties(libcellar PROPERTIES PREFIX "")
 
-lava_create_executable(TARGET cellar
+build_executable(TARGET cellar
         SUBDIRS core help
-        LIBRARIES gutlib Boost::filesystem Boost::system
+        LIBRARIES libcellar Boost::filesystem Boost::system
         DEPENDS cog)
 
-install(TARGETS cellar gutlib 
+install(TARGETS cellar libcellar 
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib/cellar
         ARCHIVE DESTINATION share/cellar)
