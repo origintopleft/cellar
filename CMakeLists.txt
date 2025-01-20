@@ -3,7 +3,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 include(Colours)
 include(Platform)
 
-project(cellar CXX)
+project(cellar VERSION 0.5 LANGUAGES CXX)
 string(TIMESTAMP BUILD_DATE "%Y.%m.%d %H:%M:%S UTC" UTC)
 # local cmake modules
 
@@ -13,6 +13,9 @@ SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib/cellar")
 # add the automatically determined parts of the RPATH
 # which point to directories outside the build tree to the install RPATH
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+# for build time config
+set(ENABLE_STEAM TRUE CACHE BOOL "Whether or not to support bottles managed by Steam.")
 
 include(Git)
 git_init()
@@ -43,11 +46,17 @@ include(Binaries)
 include_directories(include)
 configure_file("${CMAKE_SOURCE_DIR}/include/cmake.hpp.in"
                 "${CMAKE_CURRENT_BINARY_DIR}/include/cmake.hpp")
+configure_file("${CMAKE_SOURCE_DIR}/Doxyfile.in"
+                "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile")
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/include")
 set(src "${CMAKE_SOURCE_DIR}/src")
 
+set(libcellar_subdirs bottles config launch paths)
+if(ENABLE_STEAM)
+        list(APPEND steam)
+endif()
 build_library(TARGET libcellar
-        SUBDIRS bottles config launch paths
+        SUBDIRS ${libcellar_subdirs}
         DEPENDS cog)
 set_target_properties(libcellar PROPERTIES PREFIX "")
 
@@ -60,3 +69,4 @@ install(TARGETS cellar libcellar
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib/cellar
         ARCHIVE DESTINATION share/cellar)
+message(STATUS "If you have Doxygen installed, you can run it from this directory to generate documentation.")
