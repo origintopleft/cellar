@@ -53,7 +53,7 @@ set(src "${CMAKE_SOURCE_DIR}/src")
 
 set(libcellar_subdirs bottles config launch paths)
 if(ENABLE_STEAM)
-        list(APPEND steam)
+        list(APPEND libcellar_subdirs steam)
 endif()
 build_library(TARGET libcellar
         SUBDIRS ${libcellar_subdirs}

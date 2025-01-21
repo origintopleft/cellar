@@ -1,0 +1,1 @@
+steamtest test_command Test Steam related thing.
