@@ -9,8 +9,6 @@
     $ make -j4
     $ sudo make install
 
-cellar also supports the use of clang as your compiler and/or ninja as your make system, for those of you who have opinions on such things.
-
 ## Quick Usage Primer
 
     $ cellar create steam
@@ -27,7 +25,7 @@ cellar also supports the use of clang as your compiler and/or ninja as your make
 * **Corking**: Saves a bottle's configuration, including any pressed installers (see below) or installed winetricks, to a directory, then removes the WINE bottle from disk.
   You can then easily rebuild that WINE bottle later by uncorking it, which will automatically rebuild the WINE bottle with your active (or specified) version of WINE, as
   well as install any saved winetricks or run any pressed installers.
-* **Pressed Installers**: Saves a copy of an installer to `~/.cellar`, writes it down in the bottle configuration, then runs it within your WINE bottle. If you choose to
+* **Pressed Installers**: Saves a copy of an installer to `~/.local/share/cellar`, writes it down in the bottle configuration, then runs it within your WINE bottle. If you choose to
   cork this bottle later, this installer will automatically be run after uncorking. If the installer comes with "unattended install" arguments, it's recommended you press
   those in too.
 * **Easy WINE and bottle management**: Need a specific bottle for a specific program? `cellar -b bottlename <command>`. Does the bottle need to run a specific instance of
