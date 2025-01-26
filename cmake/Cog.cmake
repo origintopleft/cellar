@@ -1,4 +1,4 @@
-find_package(PythonInterp)
+find_package(Python3 COMPONENTS Interpreter)
 find_package(PythonModule)
 find_python_module(cogapp REQUIRED)
 
@@ -31,7 +31,7 @@ macro(cog_target)
             set(thisfile "${CMAKE_CURRENT_BINARY_DIR}/${outfile}")
     
             add_custom_command(OUTPUT "${thisfile}" PRE_BUILD
-                    COMMAND ${PYTHON_EXECUTABLE} -m cogapp -d -o "${thisfile}" "${cogfile}"
+                    COMMAND ${Python3_EXECUTABLE} -m cogapp -d -o "${thisfile}" "${cogfile}"
                     DEPENDS ${cogfile}
                     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                     COMMENT "Greasing the cog for ${BoldCyan}${outfile}${ColourReset}")
