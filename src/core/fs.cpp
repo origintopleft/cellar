@@ -9,7 +9,7 @@
 #include "output.hpp"
 
 using namespace std;
-using namespace boost;
+//using namespace boost;
 using namespace cellar;
 using namespace fs;
 
@@ -21,10 +21,10 @@ void cbnull_remove(string src) { return; }
 
 vector<string> fs::listdir(string path) {
 	vector<string> result;
-    filesystem::path cwd(path);
-    filesystem::directory_iterator iter_end;
+    boost::filesystem::path cwd(path);
+    boost::filesystem::directory_iterator iter_end;
 
-    for (filesystem::directory_iterator iter_cwd(cwd); iter_cwd != iter_end; ++iter_cwd) {
+    for (boost::filesystem::directory_iterator iter_cwd(cwd); iter_cwd != iter_end; ++iter_cwd) {
         string item = iter_cwd->path().filename().native();
 		
 		result.push_back(item);
@@ -33,10 +33,10 @@ vector<string> fs::listdir(string path) {
 }
 
 bool fs::recursive_copy(string src, string dst, CopyCallbackFunc callback) {
-    if (!filesystem::exists(dst)) {
+    if (!boost::filesystem::exists(dst)) {
         if (dryrun) { output::statement("mkdir:   " + dst); }
         else {
-            bool success = filesystem::create_directory(dst);
+            bool success = boost::filesystem::create_directory(dst);
             if (!success) { return false; }
         }
     }
@@ -45,17 +45,17 @@ bool fs::recursive_copy(string src, string dst, CopyCallbackFunc callback) {
         string itemabs = src + "/" + itemrel;
         string targetabs = dst + "/" + itemrel;
 
-        auto itemstat = filesystem::symlink_status(itemabs);
+        auto itemstat = boost::filesystem::symlink_status(itemabs);
 
-        if (filesystem::is_directory(itemstat)) { recursive_copy(itemabs, targetabs, callback); }
-        else if (filesystem::is_symlink(itemstat)) { 
-            auto symlinkpath = filesystem::read_symlink(itemabs);
+        if (boost::filesystem::is_directory(itemstat)) { recursive_copy(itemabs, targetabs, callback); }
+        else if (boost::filesystem::is_symlink(itemstat)) { 
+            auto symlinkpath = boost::filesystem::read_symlink(itemabs);
             if (dryrun) { output::statement("symlink: " + symlinkpath.native() + " => " + targetabs); }
-            else { filesystem::create_symlink(symlinkpath, targetabs); }
+            else { boost::filesystem::create_symlink(symlinkpath, targetabs); }
         }
         else { 
             if (dryrun) { output::statement("copy:    " + itemabs + " => " + targetabs); }
-            else { filesystem::copy(itemabs, targetabs); }
+            else { boost::filesystem::copy(itemabs, targetabs); }
         }
 
         callback(itemabs, targetabs);
@@ -67,24 +67,24 @@ bool fs::recursive_copy(string src, string dst, CopyCallbackFunc callback) {
 bool fs::recursive_copy(string src, string dst) { return recursive_copy(src, dst, cbnull_copy); }
 
 bool fs::recursive_remove(string target, RemoveCallbackFunc callback) {
-    if (!filesystem::exists(target)) { return false; }
+    if (!boost::filesystem::exists(target)) { return false; }
 
     for (string itemrel : listdir(target)) {
         string itemabs = target + "/" + itemrel;
 
-        auto itemstat = filesystem::symlink_status(itemabs);
+        auto itemstat = boost::filesystem::symlink_status(itemabs);
 
-        if (filesystem::is_directory(itemstat)) { recursive_remove(itemabs, callback); }
+        if (boost::filesystem::is_directory(itemstat)) { recursive_remove(itemabs, callback); }
         else {
             if (dryrun) { output::error("rm:      " + itemabs); } 
-            else { filesystem::remove(itemabs); }
+            else { boost::filesystem::remove(itemabs); }
         }
 
         callback(itemabs);
     }
 
     if (dryrun) { output::error("rm:      " + target); }
-    else { filesystem::remove(target); }
+    else { boost::filesystem::remove(target); }
 
     return true;
 }
