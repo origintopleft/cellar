@@ -9,9 +9,13 @@
 #include "nlohmann/json.hpp"
 
 #include "bottles.hpp"
+#include "cmake.hpp"
 #include "internal/bottles.hpp"
 #include "fs.hpp"
 #include "output.hpp"
+#ifdef ENABLE_STEAM
+#include "steam.hpp"
+#endif
 
 using namespace std;
 using namespace cellar;
@@ -65,6 +69,13 @@ map<string, Bottle> cellar::bottles::get_bottles() {
 
 	    result[item] = output;
 	}
+
+#ifdef ENABLE_STEAM
+    map<string, Bottle> bottles_proton = cellar::steam::get_app_bottles();
+    for (auto item : bottles_proton) {
+        result.insert_or_assign(item.first, item.second);
+    }
+#endif
 
 	return result;
 }
