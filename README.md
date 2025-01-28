@@ -2,6 +2,12 @@
 ### bottle management tool for WINE connoisseurs
 *(this software is considered unfinished, use at own risk)*
 
+## Dependencies
+* Boost
+* Cog for code generation (`pip install cogapp`)
+* TCLAP (either system-wide or included in `include`)
+* Ronn for man page
+
 ## Installation
 
     $ mkdir build && cd build
