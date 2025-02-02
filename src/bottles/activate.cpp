@@ -21,7 +21,7 @@ void cellar::bottles::switch_active_bottle(int argc, vector<string> argv) {
 
     string homepath = getenv("HOME");
     string bottlepath = homepath + "/.wine";
-    string targetpath = homepath + "/.local/share/cellar/bottles/" + argv[1];
+    string targetpath = cellar::bottles::resolve_bottle(argv[1]);
 
     file_status targetstatus = symlink_status(targetpath);
     if (!exists(targetstatus)) {

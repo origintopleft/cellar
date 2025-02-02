@@ -85,13 +85,20 @@ string cellar::bottles::resolve_bottle(string bottlechoice) {
     if (bottlechoice.substr(0,1) == "/" || bottlechoice.substr(0,1) == ".") { // absolute or relative path
         result = bottlechoice;
     } else if (bottlechoice.substr(0,1) == "~") { // "absolute" path in home directory, not expanded by the shell for some reason (i've seen some shit)
-        // this is a naive replacement and will fail if the user tries something like ~nick/.wine
+        // this is a naive replacement and will fail if the user tries something like ~nicole/.wine
         // i'm figuring at that point if you're doing that, you'll also recognize if your shell
         // isn't actually expanding your path...
         bottlechoice.replace(0,1,getenv("HOME"));
         // or at least you'll think to use verbose mode to make sure it's loading the right directory
         output::warning("your shell didn't expand your given path properly, doing a naive replacement", true);
         result = bottlechoice;
+#ifdef ENABLE_STEAM
+    } else if (bottlechoice.substr(0,6) == "steam:") { // steam bottles
+        string str_appid = bottlechoice.substr(6);
+        unsigned long uint_appid = std::stoul(str_appid);
+        auto steambottle = cellar::steam::app_bottle(uint_appid);
+        result = steambottle.path;
+#endif
     } else {
         string homepath = getenv("HOME");
         string fullbottlepath = homepath + "/.local/share/cellar/bottles" + bottlechoice;

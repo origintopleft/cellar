@@ -38,13 +38,24 @@ std::map<std::string, cellar::bottles::Bottle> cellar::steam::get_app_bottles() 
                     }
                 }
 
-                auto curbottle = cellar::bottles::Bottle(pth_appid.string());
-                curbottle.set_config("description", str_gamename);
+                auto curbottle = cellar::bottles::Bottle((pth_appid / "pfx").string());
+                curbottle.set_config("name", str_gamename);
                 curbottle.save_config();
-                result[std::string("proton-" + pth_appid.filename().string())] = curbottle;
+                result[std::string("steam:" + pth_appid.filename().string())] = curbottle;
             }
         }
     }
 
     return result;
+}
+
+cellar::bottles::Bottle cellar::steam::app_bottle(unsigned appid) {
+    string str_appid = std::to_string(appid);
+    string str_prefix = std::string("steam:") + str_appid;
+    auto steambottles = get_app_bottles();
+    if (steambottles.find(str_prefix) == steambottles.end()) {
+        throw std::range_error("steam is not currently managing a valid prefix for " + std::to_string(appid));
+    }
+
+    return steambottles.at(str_prefix);
 }
