@@ -27,7 +27,6 @@ void cellar::bottles::print_active_bottle(int argc, vector<string> argv) {
         } else {
             outstr << active_bottle.canonical_path;
             cellar_managed = false;
-            return;
         }
     }
 
