@@ -17,15 +17,15 @@
 
 ## Quick Usage Primer
 
-    $ cellar create steam
-    $ cellar -b steam winetricks vcrun2012
+    $ cellar create foobar2000
+    $ cellar -b foobar2000 winetricks vcrun2012
 
     # without the -b argument, cellar assumes you want to deal with ~/.wine
     # you can manage which bottle that points to with this command
-    $ cellar activate steam
+    $ cellar activate foobar2000
 
     # arguments passed to "cellar launch" are passed to wine
-    $ cellar launch /mnt/windows/Steam/Steam.exe
+    $ cellar launch /mnt/windows/foobar2000/foobar2000.exe
 
 ## Features
 * **Corking**: Saves a bottle's configuration, including any pressed installers (see below) or installed winetricks, to a directory, then removes the WINE bottle from disk.
