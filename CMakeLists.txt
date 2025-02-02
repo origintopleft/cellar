@@ -40,7 +40,6 @@ http://tclap.sourceforge.net and put the headers in ./include
 (wink, nudge)")
 endif(NOT TCLAP_FOUND)
 
-#include(LavaTargets)
 include(Binaries)
 
 include_directories(include)
@@ -58,7 +57,7 @@ endif()
 build_library(TARGET libcellar
         SUBDIRS ${libcellar_subdirs}
         DEPENDS cog)
-set_target_properties(libcellar PROPERTIES PREFIX "")
+set_target_properties(libcellar PROPERTIES PREFIX "") # prevent "liblibcellar"
 
 build_executable(TARGET cellar
         SUBDIRS core help
