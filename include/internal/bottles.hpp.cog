@@ -21,6 +21,8 @@ namespace cellar {
                 cog.outl("extern void {0} (int, vector<string>);".format(item[1]))
       ]]]*/
     //[[[end]]]
+        
+        extern void setup_bottle_home();
     }
     namespace commands {
         extern map<string, cellar::commands::CommandFunction> bottles_commands();

@@ -22,6 +22,14 @@ namespace cellar {
             bottle_steam
         };
 
+        enum bottle_manager {
+            manager_error,
+            manager_cellar,
+            manager_steam
+        };
+
+        extern std::string bottle_home;
+
         /**
          * Bottles are the internal name for WINE prefixes. In addition to standard WINE contents,
          * bottles contain a configuration file managed by cellar, which labels the bottle as well
@@ -31,6 +39,7 @@ namespace cellar {
             public:
                 // public members
                 bottle_type type;
+                bottle_manager manager;
                 json config;
                 string path;
                 string canonical_path;

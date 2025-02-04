@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <filesystem>
 #include <fstream>
 #include <map>
 #include <string>
@@ -33,6 +34,21 @@ Bottle::Bottle() {
     // strings handle themselves
     config = json({});
     type = bottle_anonymous;
+    manager = manager_error;
+}
+
+std::string cellar::bottles::bottle_home;
+
+/**
+ * @brief Sets up bottle home.
+ * Called once from early mainloop. 
+ * @todo Have this not be an effectively hardcoded path. Respect xdg paths.
+ */
+void cellar::bottles::setup_bottle_home() {
+    stringstream sstr_bottle_home;
+    sstr_bottle_home << std::getenv("HOME");
+    sstr_bottle_home << "/.local/share/cellar/bottles";
+    bottle_home = sstr_bottle_home.str();
 }
 
 /**
@@ -45,20 +61,39 @@ Bottle::Bottle(string patharg) {
     config = json({});
     path = patharg;
     
-    boost::filesystem::file_status path_status = boost::filesystem::symlink_status(path);
-    bool symlink = boost::filesystem::is_symlink(path_status);
+    //boost::filesystem::file_status path_status = boost::filesystem::symlink_status(path);
+    //bool symlink = boost::filesystem::is_symlink(path_status);
+    auto path_status = std::filesystem::path(path);
+    auto path_canon = std::filesystem::canonical(path_status);
+    canonical_path = path_canon.string();
 
-    if (symlink) {
-        boost::filesystem::path realpath = boost::filesystem::canonical(path);
-        canonical_path = realpath.string();
+    if (std::filesystem::is_symlink(path_canon)) {
         type = bottle_symlink;
     } else {
-        canonical_path = path;
 		try {
-            if (load_config()) {
-                type = bottle_labelled;
-            } else {
-                type = bottle_anonymous;
+            load_config();
+            auto cur_manager = get_config("manager");
+            if (cur_manager == "cellar") {
+                manager = manager_cellar;
+
+                if (get_config("name") != "") {
+                    type = bottle_labelled;
+                } else {
+                    type = bottle_anonymous;
+                }
+            } else if (path_canon.parent_path() == bottle_home) {
+                manager = manager_cellar;
+                set_config("manager", "cellar"); // migrate from older cellar (or correct for something weird happening)
+                save_config();
+
+                if (get_config("name") != "") {
+                    type = bottle_labelled;
+                } else {
+                    type = bottle_anonymous;
+                }
+            } else if (cur_manager == "steam") {
+                type = bottle_steam;
+                manager = manager_steam;
             }
     	}
 		catch (const exception &exc) {

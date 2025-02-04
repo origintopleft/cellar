@@ -46,6 +46,7 @@ std::map<std::string, cellar::bottles::Bottle> cellar::steam::get_app_bottles() 
                 auto curbottle = cellar::bottles::Bottle((pth_appid / "pfx").string());
                 curbottle.type = cellar::bottles::bottle_steam;
                 curbottle.set_config("name", str_gamename);
+                curbottle.set_config("manager", "steam");
                 curbottle.save_config();
                 result[std::string("steam:" + pth_appid.filename().string())] = curbottle;
             }

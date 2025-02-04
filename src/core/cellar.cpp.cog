@@ -10,6 +10,7 @@
 #include "nlohmann/json.hpp"
 
 #include "bottles.hpp"
+#include "internal/bottles.hpp"
 #include "cellar.hpp"
 #include "commands.hpp"
 #include "output.hpp"
@@ -45,6 +46,7 @@ int main(int argc, char* argv[]) {
         cout << "\n(try \"cellar help\" if you're confused)" << endl;
         return 0;
     }
+    cellar::bottles::setup_bottle_home();
     try {
         const string desc = "bottle management tool for WINE connoisseurs";
         const string versionstr = version::short_version();
@@ -70,7 +72,7 @@ int main(int argc, char* argv[]) {
         dryrun = dryrunarg.getValue();
         verbose = dryrun || verbosearg.getValue();
 
-        // BULLSHIT: trying to use str.format on this string causes bizarre compiler errors
+        // TODO: i'm sure stdlib has come a long way in formatting strings since this ancient hack was put in
         /*[[[cog
              import cog
 
@@ -103,7 +105,7 @@ int main(int argc, char* argv[]) {
             if (bottlechoice.substr(0,1) == "/" || bottlechoice.substr(0,1) == ".") { // absolute or relative path
                 bottles::active_bottle = bottles::Bottle(bottlechoice);
             } else if (bottlechoice.substr(0,1) == "~") { // "absolute" path in home directory, not expanded by the shell for some reason (i've seen some shit)
-                // this is a naive replacement and will fail if the user tries something like ~nick/.wine
+                // this is a naive replacement and will fail if the user tries something like ~nicole/.wine
                 // i'm figuring at that point if you're doing that, you'll also recognize if your shell
                 // isn't actually expanding your path...
                 bottlechoice.replace(0,1,getenv("HOME"));

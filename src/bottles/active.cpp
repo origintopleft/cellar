@@ -17,6 +17,7 @@ void cellar::bottles::print_active_bottle(int argc, vector<string> argv) {
     string bottlepath = active_bottle.canonical_path;
     stringstream outstr;
     bool cellar_managed = true;
+    bool external_managed = false;
     if (active_bottle.type == bottle_symlink) {
         outstr << "symlink to ";
         string homedir = getenv("HOME");
@@ -24,6 +25,8 @@ void cellar::bottles::print_active_bottle(int argc, vector<string> argv) {
         if (active_bottle.canonical_path.substr(0, bottlerack.length()) == bottlerack) {
             bottlepath.replace(0, bottlerack.length() + 1, ""); // should convert "/home/someone/.wine.example" to ".wine.example"
             active_bottle = bottlemap[bottlepath];
+            active_bottle.set_config("manager", "cellar");
+            active_bottle.save_config();
         } else {
             outstr << active_bottle.canonical_path;
             cellar_managed = false;
