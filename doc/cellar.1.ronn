@@ -34,4 +34,4 @@ TODO: Generate this.
 
 ## COPYRIGHT
 
-Copyright © 2017-2019 Nicholas O'Connor. Provided under the terms of the MIT license: https://opensource.org/licenses/MIT
+Copyright © 2017-2025 Nicole O'Connor. Provided under the terms of the MIT license: https://opensource.org/licenses/MIT
