@@ -24,6 +24,10 @@ using namespace cellar::bottles;
 using CommandFunction = cellar::commands::CommandFunction;
 using json = nlohmann::json;
 
+/**
+ * @brief Construct an empty bottle object.
+ * This empty bottle object can then be used to help create new ones.
+ */
 Bottle::Bottle() {
     // define a null bottle
     // strings handle themselves
@@ -31,6 +35,11 @@ Bottle::Bottle() {
     type = bottle_anonymous;
 }
 
+/**
+ * @brief Construct a bottle object from at a given path.
+ * 
+ * @param patharg The path to load a bottle from.
+ */
 Bottle::Bottle(string patharg) {
     output::statement("loading bottle from " + patharg, true);
     config = json({});
@@ -58,6 +67,14 @@ Bottle::Bottle(string patharg) {
     }
 }
 
+/**
+ * @brief Lists all bottles cellar manages or is otherwise aware of.
+ * This includes bottles managed by other tools like Steam or Lutris,
+ * assuming support for those tools is compiled into cellar. (Steam
+ * support is present; Lutris support is planned for the future.)
+ * 
+ * @return map<string, Bottle> All bottles. Bottles managed by other tools have prefixed keys, e.g. Steam bottles use "steam:"
+ */
 map<string, Bottle> cellar::bottles::get_bottles() {
 	map<string, Bottle> result;
 
@@ -80,6 +97,19 @@ map<string, Bottle> cellar::bottles::get_bottles() {
 	return result;
 }
 
+/**
+ * @brief Takes an input that refers to a bottle and returns a path to that bottle.
+ * This input can be any of the following:
+ *  * A bottle name as managed by cellar
+ *  * A prefixed bottle name, in the format `<tool>:<identifier>`. (e.g. `steam:78000`)
+ *  * An absolute or relative path, in which case it is returned with no modification.
+ *  * A path relative to (and starting with ~). cellar will throw a warning in verbose mode,
+ *    since usually the shell expands this for us, but will do a naive replacement on its own
+ *    and try to prevent confused users.
+ * 
+ * @param bottlechoice Input, usually referring to a specific bottle known to cellar.
+ * @return string Path to referenced bottle.
+ */
 string cellar::bottles::resolve_bottle(string bottlechoice) {
     string result;
     if (bottlechoice.substr(0,1) == "/" || bottlechoice.substr(0,1) == ".") { // absolute or relative path
@@ -107,6 +137,9 @@ string cellar::bottles::resolve_bottle(string bottlechoice) {
     return result;
 }
 
+/**
+ * @brief Prints bottles. Used as a command in CLI.
+ */
 void cellar::bottles::print_bottles(int argc, vector<string> argv) {
     map<string, Bottle> bottles = get_bottles();
 

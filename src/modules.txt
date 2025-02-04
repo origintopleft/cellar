@@ -2,4 +2,3 @@ core
 config
 bottles
 launch
-steam

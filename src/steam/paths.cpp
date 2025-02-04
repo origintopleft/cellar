@@ -12,6 +12,12 @@
 
 using namespace tyti;
 
+/**
+ * @brief Reads Steam library settings and returns a list of Steam library paths.
+ * Returns an empty vector if it can't read ~/.steam/root/config/libraryfolders.vdf.
+ * 
+ * @return std::vector<std::string> Steam library paths.
+ */
 std::vector<std::string> cellar::steam::find_steam_libraries() {
     std::stringstream sstr_steam_library_config;
     sstr_steam_library_config << std::getenv("HOME");
@@ -22,8 +28,6 @@ std::vector<std::string> cellar::steam::find_steam_libraries() {
     std::ifstream fd_steam_library_config(str_steam_library_config);
     if (fd_steam_library_config.fail()) { return result; } // return empty if something went wrong (should cover most problems)
     auto hnd_steam_library_config = vdf::read(fd_steam_library_config);
-
-    std::vector<std::string> result;
 
     for (auto hnd_library_def : hnd_steam_library_config.childs) {
         std::string str_index = hnd_library_def.first;

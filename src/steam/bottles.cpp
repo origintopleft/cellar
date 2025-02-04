@@ -11,6 +11,11 @@
 
 using namespace tyti; //vdf
 
+/**
+ * @brief Returns all app bottles managed by Steam.
+ * 
+ * @return std::map<std::string, cellar::bottles::Bottle> Steam managed bottles. Keys are "steam:<appid>".
+ */
 std::map<std::string, cellar::bottles::Bottle> cellar::steam::get_app_bottles() {
     std::map<std::string, cellar::bottles::Bottle> result;
 

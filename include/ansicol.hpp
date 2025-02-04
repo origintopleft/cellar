@@ -1,5 +1,5 @@
 /* This file contains string definitions for ANSI color sequences
- * it was written by Nicole O'Connor and is available  to all 
+ * it was written by Nicole O'Connor and is available to all 
  * under the MIT license.
  *
  * Usage:

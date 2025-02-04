@@ -20,6 +20,12 @@ namespace cellar {
             bottle_labelled,
             bottle_symlink
         };
+
+        /**
+         * Bottles are the internal name for WINE prefixes. In addition to standard WINE contents,
+         * bottles contain a configuration file managed by cellar, which labels the bottle as well
+         * as providing configuration settings.
+         */
         class Bottle {
             public:
                 // public members
