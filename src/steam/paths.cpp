@@ -17,8 +17,10 @@ std::vector<std::string> cellar::steam::find_steam_libraries() {
     sstr_steam_library_config << std::getenv("HOME");
     sstr_steam_library_config << "/.steam/root/config/libraryfolders.vdf";
     std::string str_steam_library_config = sstr_steam_library_config.str();
+    std::vector<std::string> result = {};
 
     std::ifstream fd_steam_library_config(str_steam_library_config);
+    if (fd_steam_library_config.fail()) { return result; } // return empty if something went wrong (should cover most problems)
     auto hnd_steam_library_config = vdf::read(fd_steam_library_config);
 
     std::vector<std::string> result;
