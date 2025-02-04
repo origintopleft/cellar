@@ -18,7 +18,8 @@ namespace cellar {
             bottle_error,
             bottle_anonymous,
             bottle_labelled,
-            bottle_symlink
+            bottle_symlink,
+            bottle_steam
         };
 
         /**

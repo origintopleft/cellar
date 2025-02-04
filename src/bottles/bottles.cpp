@@ -163,6 +163,9 @@ void cellar::bottles::print_bottles(int argc, vector<string> argv) {
             case bottle_labelled:
                 outstr << bottle.config["name"];
                 break;
+            case bottle_steam:
+                outstr << "Steam managed bottle for " << bottle.config["name"];
+                break;
             default:
                 outstr << "broken or unsupported wine bottle";
         }
