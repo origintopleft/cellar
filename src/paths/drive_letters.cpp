@@ -1,4 +1,5 @@
 #include <exception>
+#include <filesystem>
 #include <regex>
 #include <string>
 #include <unistd.h>
@@ -12,6 +13,7 @@
 using namespace std;
 
 string cellar::paths::resolve_drive_letter(string in_path) {
+    filesystem::path lastwd = filesystem::current_path();
     bool windows_input;
     static regex drive_letter_rgx(R"([a-zA-Z]:\\)");
 
@@ -25,6 +27,7 @@ string cellar::paths::resolve_drive_letter(string in_path) {
         string link_path = "";
         link_path.append(bottles::active_bottle.canonical_path);
         link_path.append("/dosdevices/");
+        filesystem::current_path(filesystem::path(link_path));
         link_path.append(drive_letter);
         
         char stringbuffer[512];
@@ -32,7 +35,9 @@ string cellar::paths::resolve_drive_letter(string in_path) {
 
         if (bufflen != -1) {
             stringbuffer[bufflen] = '\0';
-            out_path.append(stringbuffer);
+            string str_absolutepath = filesystem::canonical(stringbuffer);
+            out_path.append(str_absolutepath);
+            out_path.append("/");
         } else {
             throw runtime_error("readlink isn't having it");
         }
@@ -47,5 +52,6 @@ string cellar::paths::resolve_drive_letter(string in_path) {
         out_path.append(rest_of_path);
     }
 
+    filesystem::current_path(lastwd);
     return out_path;
 }
