@@ -166,7 +166,7 @@ string cellar::bottles::resolve_bottle(string bottlechoice) {
 #endif
     } else {
         string homepath = getenv("HOME");
-        string fullbottlepath = homepath + "/.local/share/cellar/bottles" + bottlechoice;
+        string fullbottlepath = homepath + "/.local/share/cellar/bottles/" + bottlechoice;
         result = fullbottlepath;
     }
     return result;
