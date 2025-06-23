@@ -1,0 +1,13 @@
+when:
+  - event: tag
+    ref: refs/tags/v*
+steps:
+  - name: Parse git metadata
+    image: build-runner
+    commands:
+      - git tag -n $CI_COMMIT_TAG --format "%(contents)" > ./.tag_message.txt
+  - name: Release
+    image: woodpeckerci/plugin-release
+    settings:
+      api_key:
+        from_secret: WOODPECKER_CI_TOKEN

@@ -1,9 +1,12 @@
 #include <cstdlib>
+#include <filesystem>
 #include <fstream>
+#include <regex>
 #include <sstream>
 #include <string>
 #include <vector>
 
+#include "nlohmann/json.hpp"
 #include "vdf_parser.hpp"
 
 #include "bottles.hpp"
@@ -36,4 +39,19 @@ std::vector<std::string> cellar::steam::find_steam_libraries() {
     }
 
     return result;
+}
+
+/**
+ * @brief Gets available versions of Proton from Steam.
+ * 
+ * @return std::vector<std::string> Proton versions.
+ */
+std::map<std::string, std::string> cellar::steam::find_steam_protons() {
+    std::map<std::string, std::string> result;
+
+    for (std::string str_library_path : find_steam_libraries()) {
+        std::filesystem::path pth_library(str_library_path);
+
+        for ()
+    }
 }
